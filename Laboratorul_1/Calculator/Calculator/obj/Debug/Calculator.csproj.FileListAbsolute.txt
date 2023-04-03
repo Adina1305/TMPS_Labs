@@ -1,0 +1,14 @@
+D:\TMPS\Laboratorul_1\Calculator\Calculator\bin\Debug\Calculator.exe.config
+D:\TMPS\Laboratorul_1\Calculator\Calculator\bin\Debug\Calculator.exe
+D:\TMPS\Laboratorul_1\Calculator\Calculator\bin\Debug\Calculator.pdb
+D:\TMPS\Laboratorul_1\Calculator\Calculator\obj\Debug\Calculator.csprojAssemblyReference.cache
+D:\TMPS\Laboratorul_1\Calculator\Calculator\obj\Debug\Calculator.csproj.CoreCompileInputs.cache
+D:\TMPS\Laboratorul_1\Calculator\Calculator\obj\Debug\Calculator.exe
+D:\TMPS\Laboratorul_1\Calculator\Calculator\obj\Debug\Calculator.pdb
+D:\TMPS\TMPS_Labs\Laboratorul_1\Calculator\Calculator\bin\Debug\Calculator.exe.config
+D:\TMPS\TMPS_Labs\Laboratorul_1\Calculator\Calculator\bin\Debug\Calculator.exe
+D:\TMPS\TMPS_Labs\Laboratorul_1\Calculator\Calculator\bin\Debug\Calculator.pdb
+D:\TMPS\TMPS_Labs\Laboratorul_1\Calculator\Calculator\obj\Debug\Calculator.csprojAssemblyReference.cache
+D:\TMPS\TMPS_Labs\Laboratorul_1\Calculator\Calculator\obj\Debug\Calculator.csproj.CoreCompileInputs.cache
+D:\TMPS\TMPS_Labs\Laboratorul_1\Calculator\Calculator\obj\Debug\Calculator.exe
+D:\TMPS\TMPS_Labs\Laboratorul_1\Calculator\Calculator\obj\Debug\Calculator.pdb

@@ -1,5 +1,5 @@
 Pîntea Adina, TI-202
-Lucrarea de Laboraqtor nr. 4
+Lucrarea de Laborator nr. 4
 Tema: Behavioral Design Patterns.
 
 Obiective: 
@@ -46,9 +46,149 @@ Acest proiect implementeaza trei sabloane comportamentale: Strategy, Observer si
 
 Sabloanele sunt implementate astfel:
 1. Sablonul Strategy este implementat in fisierul ICalculatorStrategy.cs si in clasa Calculator din fisierul Calculator.cs. Interfata ICalculatorStrategy defineste metoda Calculate(), care calculeaza rezultatul operatiei dorite. Clasa Calculator utilizeaza un obiect de tip ICalculatorStrategy pentru a efectua operatii de calcul pe numerele primite ca parametri. De asemenea, clasa Calculator are si o metoda SetStrategy(), care permite schimbarea strategiei de calcul utilizata.
-2. Sablonul Observer este implementat in fisierele CalculatorSubject.cs, ICalculatorObserver.cs si Display.cs. Interfata ICalculatorObserver defineste metoda OnCalculation(), care este apelata de obiectul CalculatorSubject atunci cand un eveniment de calcul are loc. Clasa Display este o clasa care implementeaza interfata ICalculatorObserver si afiseaza rezultatul calculului atunci cand este notificata.
-3. Sablonul Command este implementat in fisierul ICommand.cs si in clasa CalculatorCommand din acelasi fisier. Interfata ICommand defineste metodele Execute() si Undo(). Clasa CalculatorCommand implementeaza interfata ICommand si reprezinta o comanda care poate fi executata asupra unui CalculatorSubject. Cand comanda este executata, se efectueaza operatia de calcul corespunzatoare si se notifica observatorii atasati.
+public interface ICalculatorStrategy
+     {
+          double Calculate(double num1, double num2);
+     }
+     
+public class Calculator
+     {
+          private ICalculatorStrategy strategy;
+
+          public Calculator(ICalculatorStrategy strategy)
+          {
+               this.strategy = strategy;
+          }
+
+          public void SetStrategy(ICalculatorStrategy strategy)
+          {
+               this.strategy = strategy;
+          }
+
+          public double Calculate(double num1, double num2)
+          {
+               return strategy.Calculate(num1, num2);
+          }
+     }
+
+
+3. Sablonul Observer este implementat in fisierele CalculatorSubject.cs, ICalculatorObserver.cs si Display.cs. Interfata ICalculatorObserver defineste metoda OnCalculation(), care este apelata de obiectul CalculatorSubject atunci cand un eveniment de calcul are loc. Clasa Display este o clasa care implementeaza interfata ICalculatorObserver si afiseaza rezultatul calculului atunci cand este notificata.
+ public interface ICalculatorObserver
+     {
+          void OnCalculation(CalculatorEvent e);
+     }
+
+     public class Display : ICalculatorObserver
+     {
+          public void OnCalculation(CalculatorEvent e)
+          {
+               Console.WriteLine($"Result: {e.Result}");
+          }
+     }
+     
+     public class CalculatorSubject
+     {
+          private List<ICalculatorObserver> observers = new List<ICalculatorObserver>();
+
+          public void Attach(ICalculatorObserver observer)
+          {
+               observers.Add(observer);
+          }
+
+          public void Detach(ICalculatorObserver observer)
+          {
+               observers.Remove(observer);
+          }
+
+          public void Notify(CalculatorEvent e)
+          {
+               foreach (ICalculatorObserver observer in observers)
+               {
+                    observer.OnCalculation(e);
+               }
+          }
+     }
+
+5. Sablonul Command este implementat in fisierul ICommand.cs si in clasa CalculatorCommand din acelasi fisier. Interfata ICommand defineste metodele Execute() si Undo(). Clasa CalculatorCommand implementeaza interfata ICommand si reprezinta o comanda care poate fi executata asupra unui CalculatorSubject. Cand comanda este executata, se efectueaza operatia de calcul corespunzatoare si se notifica observatorii atasati.
+ public interface ICommand
+     {
+     }
+
+     public class CalculatorCommand : ICommand
+     {
+          public CalculatorCommand()
+          {
+          }
+
+          public void Execute()
+          {
+          }
+
+          public void Undo()
+          {
+          }
+     }
+
 
 In fisierul Program.cs se afla functia Main(), care construieste si foloseste obiectele de mai sus. In functie de alegerea utilizatorului, se creaza si se executa o comanda de adunare sau de scadere, folosind strategia corespunzatoare. De fiecare data cand se executa o comanda, se notifica observatorii atasati CalculatorSubject-ului, care afiseaza rezultatul pe ecran.
+ class Program
+     {
+          static void Main(string[] args)
+          {
+               // 1. Strategy
+               Calculator calculator = new Calculator(new AddStrategy());
+
+               // 2. Observer
+               CalculatorSubject calculatorSubject = new CalculatorSubject();
+               Display display = new Display();
+               calculatorSubject.Attach(display);
+
+               // menu loop
+               bool exit = false;
+               while (!exit)
+               {
+                    Console.WriteLine("Please select an operation:");
+                    Console.WriteLine("1. Add");
+                    Console.WriteLine("2. Subtract");
+                    Console.WriteLine("3. Exit");
+
+                    string choice = Console.ReadLine();
+
+                    switch (choice)
+                    {
+                         case "1":
+                              Console.Write("Enter the first number: ");
+                              double num1 = Convert.ToDouble(Console.ReadLine());
+
+                              Console.Write("Enter the second number: ");
+                              double num2 = Convert.ToDouble(Console.ReadLine());
+
+                              CalculatorEvent addEvent = new CalculatorEvent();
+                              CalculatorCommand addCommand = new CalculatorCommand(calculatorSubject, num1, num2, new AddStrategy(), addEvent);
+                              addCommand.Execute();
+                              break;
+                         case "2":
+                              Console.Write("Enter the first number: ");
+                              num1 = Convert.ToDouble(Console.ReadLine());
+
+                              Console.Write("Enter the second number: ");
+                              num2 = Convert.ToDouble(Console.ReadLine());
+
+                              CalculatorEvent subtractEvent = new CalculatorEvent();
+                              CalculatorCommand subtractCommand = new CalculatorCommand(calculatorSubject, num1, num2, new SubtractStrategy(), subtractEvent);
+                              subtractCommand.Execute();
+                              break;
+                         case "3":
+                              exit = true;
+                              break;
+                         default:
+                              Console.WriteLine("Invalid choice. Please try again.");
+                              break;
+                    }
+
+                    Console.WriteLine();
+               }
+          }
+     }
 
 In concluzie, acest proiect este o implementare buna a sabloanelor comportamentale Strategy, Observer si Command. Sablonul Strategy este folosit pentru a permite schimbarea strategiei de calcul utilizate de un obiect Calculator, fara a schimba codul care foloseste obiectul. Sablonul Observer este folosit pentru a permite afisarea rezultatului unui calcul de catre obiecte care nu sunt responsabile pentru efectuarea acestui calcul. Sablonul Command este folosit pentru a permite executarea unei comenzi asupra unui CalculatorSubject, fara a fi necesar sa se cunoasca detalii despre modul in care se efectueaza acea comanda.
